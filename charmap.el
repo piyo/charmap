@@ -56,6 +56,8 @@
   "Popup tooltip face."
   :group 'charmap)
 
+(defvar charmap-create-buffer-hook nil)
+
 (defconst charmap-describe-char-bufname "*Help*")
 
 (defconst charmap-usage "Usage: C-f / C-b / C-n / C-p / RET: killring / q: quit")
@@ -380,7 +382,8 @@ Non-nil POSITION means use the character at POSITION."
        (setq buffer-read-only t)
        (use-local-map charmap-keymap)
        (font-lock-mode t)
-       (message charmap-usage))))
+       (message charmap-usage)
+       (run-hooks 'charmap-create-buffer-hook))))
 
 
 ;;;###autoload
