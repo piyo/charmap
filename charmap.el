@@ -298,12 +298,14 @@
 
 (defun charmap-next-line ()
   (interactive)
-  (next-line)
+  ;; take advantage of (eq line-move-visual t)
+  (call-interactively 'next-line)       ; silence the compiler
   (charmap-describe-char))
 
 (defun charmap-prev-line ()
   (interactive)
-  (previous-line)
+  ;; take advantage of (eq line-move-visual t)
+  (call-interactively 'previous-line)   ; silence the compiler,
   (charmap-describe-char))
 
 (defun charmap-describe-char ()
@@ -376,11 +378,12 @@ Non-nil POSITION means use the character at POSITION."
        (setq buffer-face-mode-face 'charmap-face)
        (buffer-face-mode)
        ,@body
-       (beginning-of-buffer)
+       (goto-char (point-min))
        (setq buffer-read-only t)
        (use-local-map charmap-keymap)
        (font-lock-mode t)
        (message charmap-usage)
+       (charmap-describe-char)
        (run-hooks 'charmap-create-buffer-hook))))
 
 
@@ -402,9 +405,8 @@ Non-nil POSITION means use the character at POSITION."
   (interactive)
   (with-charmap-buffer
    (dolist (unicode-block (charmap-get-blocks))
-     (insert (format "%s\n" (substitute ?\s ?_ (symbol-name unicode-block))))
+     (insert (format "%s\n" (subst-char-in-string ?_ ?\s (symbol-name unicode-block))))
      (charmap-print unicode-block)
-     (delete-backward-char 1)
      (insert "\n\n"))))
 
 
