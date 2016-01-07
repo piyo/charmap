@@ -366,6 +366,7 @@
        (setq buffer-read-only t)
        (use-local-map charmap-keymap)
        (font-lock-mode t)
+       (charmap-describe-char)
        (message charmap-usage))))
 
 
