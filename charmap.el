@@ -387,8 +387,8 @@
   (interactive)
   (with-charmap-buffer
    (dolist (unicode-block (charmap-get-blocks))
+     (insert (format "%s\n" (subst-char-in-string ?_ ?\s (symbol-name unicode-block))))
      (charmap-print unicode-block)
-     (delete-backward-char 1)
      (insert "\n\n"))))
 
 
