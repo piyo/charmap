@@ -292,12 +292,14 @@
 
 (defun charmap-next-line ()
   (interactive)
-  (next-line)
+  ;; take advantage of (eq line-move-visual t)
+  (call-interactively 'next-line)       ; silence the compiler
   (charmap-describe-char))
 
 (defun charmap-prev-line ()
   (interactive)
-  (previous-line)
+  ;; take advantage of (eq line-move-visual t)
+  (call-interactively 'previous-line)   ; silence the compiler,
   (charmap-describe-char))
 
 (defun charmap-describe-char ()
@@ -360,7 +362,7 @@
        (setq buffer-face-mode-face 'charmap-face)
        (buffer-face-mode)
        ,@body
-       (beginning-of-buffer)
+       (goto-char (point-min))
        (setq buffer-read-only t)
        (use-local-map charmap-keymap)
        (font-lock-mode t)
